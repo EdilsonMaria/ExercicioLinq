@@ -2,27 +2,24 @@ namespace ExercicioLinq
 {
     public class ExercicioLinqTests
     {
-        private List<Produto> produtos;
-
-        public ExercicioLinqTests()
-        {
-            produtos = new List<Produto>(); ;
-            produtos.Add(new Produto { Nome = "Sabão", Valor = 1.1m, Quantidade = 10 });
-            produtos.Add(new Produto { Nome = "Detergente de prato", Valor = 10, Quantidade = 9 });
-            produtos.Add(new Produto { Nome = "Água", Valor = (decimal)8.2f, Quantidade = 8 });
-            produtos.Add(new Produto { Nome = "Esponja", Valor = (decimal)5.5, Quantidade = 7 });
-            produtos.Add(new Produto { Nome = "Água sanitária", Valor = (decimal)30.30d, Quantidade = 6 });
-            produtos.Add(new Produto { Nome = "Vassoura", Valor = 3.3m, Quantidade = 5 });
-            produtos.Add(new Produto { Nome = "Desinfetante", Valor = 4.4m, Quantidade = 4 });
-            produtos.Add(new Produto { Nome = "Pano de chão", Valor = 5.5m, Quantidade = 3 });
-            produtos.Add(new Produto { Nome = "Purificador de água", Valor = 6.6m, Quantidade = 2 });
-            produtos.Add(new Produto { Nome = "Balde", Valor = 10.1m, Quantidade = 1 });
-        }
+        private readonly List<Produto> produtos =
+            [
+                new Produto { Nome = "Sabão", Valor = 1.1m, Quantidade = 10 },
+                new Produto { Nome = "Detergente de prato", Valor = 10, Quantidade = 9 },
+                new Produto { Nome = "Água", Valor = (decimal)8.2f, Quantidade = 8 },
+                new Produto { Nome = "Esponja", Valor = (decimal)5.5, Quantidade = 7 },
+                new Produto { Nome = "Água sanitária", Valor = (decimal)30.30d, Quantidade = 6 },
+                new Produto { Nome = "Vassoura", Valor = 3.3m, Quantidade = 5 },
+                new Produto { Nome = "Desinfetante", Valor = 4.4m, Quantidade = 4 },
+                new Produto { Nome = "Pano de chão", Valor = 5.5m, Quantidade = 3 },
+                new Produto { Nome = "Purificador de água", Valor = 6.6m, Quantidade = 2 },
+                new Produto { Nome = "Balde", Valor = 10.1m, Quantidade = 1 },
+            ];
 
         [Fact(DisplayName = "Quantidade de produtos que possuem a palavra 'água' no nome.")]
         public void Test1()
         {
-            int quantidade = 0;
+            int quantidade = produtos.Count(a => a.Nome.Contains("água", StringComparison.CurrentCultureIgnoreCase));
 
             Assert.Equal(3, quantidade);
         }
@@ -30,7 +27,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Produtos ordenados por nome.")]
         public void Test2()
         {
-            IEnumerable<Produto> produtosOrdenados = null;
+            IEnumerable<Produto> produtosOrdenados = produtos.OrderBy(a => a.Nome);
 
             Assert.Equal("Água", produtosOrdenados.First().Nome);
             Assert.Equal("Vassoura", produtosOrdenados.Last().Nome);
@@ -39,7 +36,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Produtos ordenados do mais caro para o mais barato.")]
         public void Test3()
         {
-            IEnumerable<Produto> produtosOrdenados = null;
+            IEnumerable<Produto> produtosOrdenados = produtos.OrderByDescending(a => a.Valor);
 
             Assert.Equal("Água sanitária", produtosOrdenados.First().Nome);
             Assert.Equal("Sabão", produtosOrdenados.Last().Nome);
@@ -48,7 +45,8 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Produto mais caro")]
         public void Test4()
         {
-            Produto produto = null;
+            Produto produto = produtos.OrderByDescending(a => a.Valor).First();
+
 
             Assert.Equal("Água sanitária", produto.Nome);
         }
@@ -56,7 +54,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Produto mais barato")]
         public void Test5()
         {
-            Produto produto = null;
+            Produto produto = produtos.OrderBy(a => a.Valor).First();
 
             Assert.Equal("Sabão", produto.Nome);
         }
@@ -64,7 +62,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Lista dos nomes dos produtoss")]
         public void Test6()
         {
-            IEnumerable<string> nomeDosProdutos = null;
+            IEnumerable<string> nomeDosProdutos = produtos.Order(a => a.Nome);
 
             Assert.Contains("Água", nomeDosProdutos);
         }

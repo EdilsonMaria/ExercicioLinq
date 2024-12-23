@@ -45,7 +45,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Produto mais caro")]
         public void Test4()
         {
-            Produto produto = produtos.OrderByDescending(a => a.Valor).First();
+            Produto produto = produtos.MaxBy(a => a.Valor);
 
 
             Assert.Equal("Água sanitária", produto.Nome);
@@ -62,7 +62,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Lista dos nomes dos produtoss")]
         public void Test6()
         {
-            IEnumerable<string> nomeDosProdutos = produtos.Order(a => a.Nome);
+            IEnumerable<string> nomeDosProdutos = produtos.OrderBy(a => a.Nome).Select(a => a.Nome);
 
             Assert.Contains("Água", nomeDosProdutos);
         }
@@ -70,7 +70,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Quantidade total de todos dos produtos")]
         public void Test7()
         {
-            int quantidade = 0;
+            int quantidade = produtos.Sum(a => a.Quantidade);
 
             Assert.Equal(55, quantidade);
         }
@@ -78,7 +78,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Nome dos produtos com valor até 10.0")]
         public void Test8()
         {
-            IEnumerable<string> nomeDosProdutos = null;
+            IEnumerable<string> nomeDosProdutos = produtos.Where(a => a.Valor <= 10m).Select(a => a.Nome);
 
             Assert.Contains("Detergente de prato", nomeDosProdutos);
             Assert.Contains("Sabão", nomeDosProdutos);
@@ -87,7 +87,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Nome dos produtos com valor maior 10.0")]
         public void Test9()
         {
-            IEnumerable<string> nomeDosProdutos = null;
+            IEnumerable<string> nomeDosProdutos = produtos.Where(a => a.Valor > 10m).Select(a => a.Nome);
 
             Assert.Contains("Balde", nomeDosProdutos);
             Assert.Contains("Água sanitária", nomeDosProdutos);
@@ -96,7 +96,7 @@ namespace ExercicioLinq
         [Fact(DisplayName = "Verifica se o produto 'pão' está na lista")]
         public void Test10()
         {
-            bool existe = true;
+            bool existe = produtos.Any(a => a.Nome == "pão");
 
             Assert.False(existe);
         }
